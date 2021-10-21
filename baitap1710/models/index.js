@@ -36,14 +36,14 @@ module.exports.add = function (req, res) {
     })
 
 }
-function checkMssv(mssv) {
-    var rs = null;
-    student.findOne({ mssv: mssv }, function kq(err, result) {
-        if (err) throw err;
-        return result;
-    })
-    return rs = kq();
-}
+// function checkMssv(mssv) {
+//     var rs = null;
+//     student.findOne({ mssv: mssv }, function kq(err, result) {
+//         if (err) throw err;
+//         return result;
+//     })
+//     return rs = kq();
+// }
 module.exports.delete = function (req, res) {
     var stu = req.body.mssv;
     student.findOneAndRemove({ mssv: stu }, function (err, result) {

@@ -10,4 +10,5 @@ router.get("/search",model.search);
 router.get("/viewdelete",model.viewdelete);
 router.get("/:id/viewupdate",model.viewupdate);
 router.put("/:id",model.update);
+//
 module.exports = router;
