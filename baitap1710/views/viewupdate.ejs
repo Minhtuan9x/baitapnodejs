@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student</title>
+    <%- include ('./boostrap-jquery.ejs')%>
+</head>
+
+<body>
+    <header>
+        <%- include ('./header.ejs')%>
+    </header>
+
+
+    <div class="container">
+        <form id="formfind">
+            <div class="form-group">
+                <label for="email">Mssv:</label>
+                <input type="number" class="form-control" name="mssv" id="mssvfind" value="<%=id%>">
+            </div>
+            <button type="submit" class="btn btn-primary col-2">Find</button>
+        </form>
+        <form id="formupdate">
+            <div class="form-group">
+                <label for="email">Mssv: </label>
+                <input id="mssvup" type="number" class="form-control" name="mssv">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Name: </label>
+                <input id="nameup" type="text" class="form-control" name="name">
+            </div>
+            <button type="submit" class="btn btn-primary col-2">Update</button>
+        </form>
+    </div>
+    <footer>
+        <%- include ('./footer.ejs')%>
+    </footer>
+    <script>
+        if ($("#mssvfind").val() == "") {
+            $("#formupdate").hide();
+        } else {
+            $.ajax({
+                type: "get",
+                url: "/student/search",
+                data: {
+                    "mssv": $("#mssvfind").val()
+                },
+                dataType: "json",
+                //contentType:"application/json",
+                success: function (response) {
+                    console.log(response.mssv);
+                    if (response != null) {
+                        $("#mssvup").val(response.mssv);
+                        $("#nameup").val(response.name);
+                    }
+                }
+            });
+        }
+
+        
+        $(document).ready(function () {
+            $("#formfind").submit(function (e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+                $.ajax({
+                    type: "get",
+                    url: "/student/search",
+                    data: data,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $("#formupdate").show()
+                            $("#mssvup").val(response.mssv);
+                            $("#nameup").val(response.name);
+                        }
+
+                    }
+                });
+            })
+        })
+        $(document).ready(function () {
+            $('#formupdate').submit(function (e) {
+                e.preventDefault();
+                var data = {
+                    "mssv": $("#mssvup").val(),
+                    "name": $("#nameup").val()
+                }
+                $.ajax({
+                    type: "put",
+                    url: "/student/" + $("#mssvfind").val(),
+                    data: data,
+                    dataType: "json",
+                    success: function (response) {
+                        alert('Update Success');
+                        window.location.href = "/student"
+                    }
+                });
+            })
+        })
+    </script>
+
+
+</body>
+
+</html>

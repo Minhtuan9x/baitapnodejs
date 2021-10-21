@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include ('./boostrap-jquery.ejs')%>
+</head>
+
+<body>
+    <header>
+        <%- include ('./header.ejs')%>
+    </header>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>MSSV</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(item of listStudent) { %>
+                    <tr>
+                        <td>
+                            <%=item.mssv%>
+                        </td>
+                        <td>
+                            <%=item.name%>
+                        </td>
+                        <td>
+                            <button id="update" data-toggle="tooltip" title="Update Student" class="btn btn-info" value=<%=item.mssv%>
+                                onclick="updateAction(value)"><i class="fas fa-user-edit"></i></button>
+                            <button id="xoa" data-toggle="tooltip" title="Delete Student" class="btn btn-warning" value=<%=item.mssv%>
+                                onclick="deleteAction(value)"><i class="fas fa-minus-circle"></i></button>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <%- include ('./footer.ejs')%>
+    </footer>
+    <script>
+        function deleteAction(value) {
+            var a = value;
+            var data = {
+                "mssv": a
+            }
+            $.ajax({
+                type: "delete",
+                url: "/student",
+                data: data,
+                dataType: "json",
+                //contentType:"application/json",
+                success: function (response) {
+                    location.reload()
+                }
+            });
+        }
+        function updateAction(value) {
+            var a = value;
+            window.location.href = "/student/" + a + "/viewupdate/";
+
+        }
+    </script>
+</body>
+
+</html>

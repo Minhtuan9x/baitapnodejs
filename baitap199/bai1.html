@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <a>Danh sách môn sv đăng kí: </a>
+    <p id="demo"></p>
+    <a>Tổng số môn học là: </a>
+    <p id="demo1"></p>
+    <a>Tín chỉ cao nhất: </a>
+    <p id="demo2"></p>
+    <a>Môn có tín chỉ cao nhất: </a>
+    <p id="demo3"></p>
+    <script>
+        const s = '{"student":{"id":123,"fullname":"do minh tuan","email":null,'
+        +' "subjects":[{ "code":123,"name":"Toán","tc":3},{"code":456,"name":"Lý","tc":4}]}}';
+        const myStudent = JSON.parse(s);
+        const arr = myStudent.student.subjects;
+        console.log(myStudent)
+        var str='';
+        var tong = arr.length;
+        var nhat = 0;
+        var monnhat;
+        for(var i = 0;i<arr.length;i++){
+            str+=arr[i].name +'</br>';
+            if(nhat<arr[i].tc){
+                nhat=arr[i].tc;
+                monnhat = arr[i].name;
+            }
+        }
+        document.getElementById("demo").innerHTML = str;
+        document.getElementById("demo1").innerHTML = tong;
+        document.getElementById("demo2").innerHTML = nhat;
+        document.getElementById("demo3").innerHTML = monnhat;
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Student</title>
+    <%- include ('./boostrap-jquery.ejs')%>
+</head>
+
+<body>
+    <header>
+        <%- include ('./header.ejs')%>
+    </header>
+
+    <div class="container">
+        <form id="formdelete">
+            <div class="form-group">
+                <label for="email">Mssv:</label>
+                <input type="number" class="form-control" name="mssv">
+            </div>
+            <button type="submit" class="btn btn-primary col-2">Find And Del</button>
+        </form>
+    </div>
+    <footer>
+        <%- include ('./footer.ejs')%>
+    </footer>
+    <script>
+        $(document).ready(function () {
+            $("#formdelete").submit(function (e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+                $.ajax({
+                    type: "delete",
+                    url: "/student",
+                    data: data,
+                    dataType: "json",
+                    //contentType:"application/json",
+                    success: function (response) {
+                        if (response != null) {
+                            alert('Xoa Thanh Cong !!!');
+                            window.location.href = "/student"
+                        }
+                        if (response == null)
+                            alert('Xoa That Bai !!!');
+                    }
+                });
+            })
+        })
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student</title>
+    <%- include ('./boostrap-jquery.ejs')%>
+</head>
+
+<body>
+    <header>
+        <%- include ('./header.ejs')%>
+    </header>
+    <div class="container">
+        <form id="formSearch">
+            <div class="form-group">
+                <label for="email">Mssv:</label>
+                <input id="mssvid" type="number" class="form-control" name="mssv">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Name:</label>
+                <input id="nameid" type="text" class="form-control" name="name">
+            </div>
+            <button type="submit" class="btn btn-primary col-2">Search</button>
+        </form>
+        <br />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>MSSV</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody id="a">
+
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        <%- include ('./footer.ejs')%>
+    </footer>
+    <script>
+        $(document).ready(function () {
+            $("#formSearch").submit(function (e) {
+                e.preventDefault();
+                var data = $(this).serialize();
+                $("#a").empty();
+                $.ajax({
+                    type: "get",
+                    url: "/student/search",
+                    data: data,
+                    dataType: "json",
+                    //contentType:"application/json",
+                    success: function (response) {
+                        if (response == null){
+                            alert('Khong Tim Thay !!!');
+                            $("#mssvid").val("");
+                            $("#nameid").val("");
+                        } 
+                        var result = "<tr> <td>" + response.mssv + "</td><td>" + response.name + "</td></tr>";
+                        $("#a").append(result);
+                    }
+                })
+            })
+        })
+
+    </script>
+</body>
+
+</html>

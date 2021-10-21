@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include ('./boostrap-jquery.ejs')%>
+
+</head>
+
+<body>
+    <header>
+        <%- include ('./header.ejs')%>
+    </header>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="email">Mssv: </label>
+                <input id="mssvid" type="number" class="form-control" name="mssv">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Name: </label>
+                <input type="text" class="form-control" name="name">
+            </div>
+            <button type="submit" class="btn btn-primary col-2">ADD</button>
+        </form>
+    </div>
+    <footer>
+        <%- include ('./footer.ejs')%>
+    </footer>
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
+                var formdata = $(this).serialize();//lay gia tri form
+                if ($("#mssvid").val() == "")
+                    alert('Mssv khong duoc de trong !!!');
+                else {
+                    $.ajax({
+                        type: "post",
+                        url: "/student",
+                        data: formdata,
+                        dataType: "json",
+                        //contentType:"application/json",
+                        success: function (response) {
+                            if (response.status == "success") {
+                                window.location.href = "/student"
+                            } else
+                                alert('Trung ma!!');
+                        }
+                    });
+                }
+
+            })
+        })
+    </script>
+</body>
+
+</html>
