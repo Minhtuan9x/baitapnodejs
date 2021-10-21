@@ -13,5 +13,5 @@ app.use("/student",rou);
 app.use("/*",rou);
 
 app.listen(8082, () => {
-    console.log(`Server started on port tuuan`);
+    console.log(`Server started on port`);
 });
