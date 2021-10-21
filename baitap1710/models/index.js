@@ -18,6 +18,7 @@ module.exports.viewadd = function (req, res) {
     res.render("viewadd.ejs");
 }
 module.exports.add = function (req, res) {
+    console.log(req.body);
     var data = getInPut(req.body);
     student.findOne({mssv:data.mssv}, function (err, result) {
         if (result == null) {
