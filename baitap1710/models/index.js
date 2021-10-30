@@ -4,6 +4,7 @@ var studentSchema = mongoose.Schema({
     mssv: Number,
     name: String
 });
+
 var student = mongoose.model("student", studentSchema);
 
 
@@ -14,13 +15,12 @@ module.exports.findAll = function (req, res) {
         res.render("homepage.ejs", { listStudent: data });
     })
 }
-
 module.exports.viewadd = function (req, res) {
     res.render("viewadd.ejs");
 }
 
 module.exports.add = function (req, res) {
-    var data = getInPut(req.body);
+    var data = toObject(req.body);
     checkMssv(data.mssv, (result) => {
         if (result == null) {
             student.create(data, function (err) {
@@ -78,7 +78,7 @@ module.exports.viewupdate = function (req, res) {
     res.render("viewupdate.ejs", { id: id });
 }
 module.exports.update = function (req, res) {
-    var stu = getInPut(req.body);
+    var stu = toObject(req.body);
     student.updateOne({ mssv: req.params.id }, stu, function (err) {
         if (err) throw err;
         console.log("Update Success!!!");
@@ -102,7 +102,7 @@ function checkSearchInput(obj) {
     return obj
 }
 
-function getInPut(body) {
+function toObject(body) {
     var sv =
     {
         "mssv": checkUndefined(body.mssv),
