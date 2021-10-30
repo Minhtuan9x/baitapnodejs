@@ -6,6 +6,7 @@ var studentSchema = mongoose.Schema({
 });
 var student = mongoose.model("student", studentSchema);
 
+
 module.exports.findAll = function (req, res) {
 
     student.find(function (err, data) {
@@ -17,38 +18,46 @@ module.exports.findAll = function (req, res) {
 module.exports.viewadd = function (req, res) {
     res.render("viewadd.ejs");
 }
+
 module.exports.add = function (req, res) {
     var data = getInPut(req.body);
-    student.findOne({mssv:data.mssv}, function (err, result) {
+    checkMssv(data.mssv, (result) => {
         if (result == null) {
-            student.insertMany(data, function (err) {
-                if (err) throw err;
+            student.create(data, function (err) {
+                if (err)
+                    throw err;
                 res.json({
-                    "status":"success"
+                    "status": "success"
                 });
                 console.log("Insert Success!!!");
-            })
-        } else {
-            res.json({
-                "status":"fail"
             });
+        } else {
+            res.status(400).body({
+                "status": "fail"
+            });
+            // res.json({
+            //     "status": "fail"
+            // });
         }
     })
 
 }
-// function checkMssv(mssv) {
-//     var rs = null;
-//     student.findOne({ mssv: mssv }, function kq(err, result) {
-//         if (err) throw err;
-//         return result;
-//     })
-//     return rs = kq();
-// }
+
+function checkMssv(mssv, callBack) {
+    student.findOne({ mssv: mssv }, function kq(err, result) {
+        if (err) throw err;
+        callBack(result);
+    })
+}
+
 module.exports.delete = function (req, res) {
     var stu = req.body.mssv;
     student.findOneAndRemove({ mssv: stu }, function (err, result) {
         if (err) throw err;
-        console.log("Delete Success!!!");
+        if (result == null)
+            console.log("fail!");
+        else
+            console.log("Delete Success!!!");
         res.json(result);
     })
 }
@@ -57,7 +66,6 @@ module.exports.viewSearch = function (req, res) {
 }
 module.exports.search = function (req, res) {
     var stu = checkSearchInput(req.query);
-    //console.log(stu);
     student.findOne(stu, function (err, result) {
         if (err) throw err;
         console.log("Find success!!");
@@ -73,7 +81,7 @@ module.exports.viewupdate = function (req, res) {
     res.render("viewupdate.ejs", { id: id });
 }
 module.exports.update = function (req, res) {
-    var stu = req.body;
+    var stu = getInPut(req.body);
     student.updateOne({ mssv: req.params.id }, stu, function (err) {
         if (err) throw err;
         console.log("Update Success!!!");
@@ -103,7 +111,6 @@ function getInPut(body) {
         "mssv": checkUndefined(body.mssv),
         "name": checkUndefined(body.name)
     }
-
     return sv;
 }
 function checkUndefined(inPut) {

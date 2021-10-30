@@ -50,7 +50,6 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response.mssv);
                     if (response != null) {
                         $("#mssvup").val(response.mssv);
                         $("#nameup").val(response.name);
@@ -59,7 +58,7 @@
             });
         }
 
-        
+
         $(document).ready(function () {
             $("#formfind").submit(function (e) {
                 e.preventDefault();
@@ -74,6 +73,10 @@
                             $("#formupdate").show()
                             $("#mssvup").val(response.mssv);
                             $("#nameup").val(response.name);
+                        } else {
+                            alert("Khong tim thay SV!!")
+                            $("#formupdate").hide();
+                            $("#mssvfind").val("");
                         }
 
                     }

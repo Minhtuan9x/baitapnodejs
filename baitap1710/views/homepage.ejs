@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% listStudent.forEach(item => function(){%>
+                <% listStudent.forEach(item =>{%>
                     <tr>
                         <td>
                             <%=item.mssv%>
@@ -63,8 +63,7 @@
             });
         }
         function updateAction(value) {
-            var a = value;
-            window.location.href = "/student/" + a + "/viewupdate/";
+            window.location.href = "/student/" + value + "/viewupdate/";
 
         }
     </script>
