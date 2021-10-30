@@ -32,12 +32,9 @@ module.exports.add = function (req, res) {
                 console.log("Insert Success!!!");
             });
         } else {
-            res.status(400).body({
+            res.json({
                 "status": "fail"
             });
-            // res.json({
-            //     "status": "fail"
-            // });
         }
     })
 
