@@ -1,16 +1,18 @@
 var express = require('express');
 var router = express.Router();
-var student = require("../models/student.js");
-router.get('/', function (req, res) {
+var student = require("../models/StudentModels.js");
+
+
+router.get('/', function (req, res) {//find All
     student.find(function (err, data) {
         if (err) throw err;
         res.render("homepage.ejs", { listStudent: data });
     })
 });
-router.get("/viewadd", function (req, res) {
+router.get("/viewadd", function (req, res) {// render vỉew add
     res.render("viewadd.ejs");
 });
-router.post("/", function (req, res) {
+router.post("/", function (req, res) {//add
     var data = toObject(req.body);
     checkMssv(data.mssv, (result) => {
         if (result == null) {
@@ -29,7 +31,7 @@ router.post("/", function (req, res) {
         }
     })
 });
-router.delete("/", function (req, res) {
+router.delete("/", function (req, res) {//delete
     var stu = req.body.mssv;
     student.findOneAndRemove({ mssv: stu }, function (err, result) {
         if (err) throw err;
@@ -40,10 +42,10 @@ router.delete("/", function (req, res) {
         res.json(result);
     })
 });
-router.get("/viewsearch", function (req, res) {
+router.get("/viewsearch", function (req, res) {//view search
     res.render("viewsearch.ejs");
 });
-router.get("/search", function (req, res) {
+router.get("/search", function (req, res) {//search
     var stu = checkSearchInput(req.query);
     student.findOne(stu, function (err, result) {
         if (err) throw err;
@@ -51,16 +53,16 @@ router.get("/search", function (req, res) {
         res.json(result);
     })
 });
-router.get("/viewdelete", function (req, res) {
+router.get("/viewdelete", function (req, res) {//view delete
     res.render("viewdelete.ejs");
 });
-router.get("/:id/viewupdate", function (req, res) {
+router.get("/:id/viewupdate", function (req, res) {//view update
     var id = req.params.id;
     res.render("viewupdate.ejs", { id: id });
 });
 router.put("/:id", function (req, res) {
     var stu = toObject(req.body);
-    student.updateOne({ mssv: req.params.id }, stu, function (err) {
+    student.updateOne({ mssv: req.params.id }, stu, function (err) {//update
         if (err) throw err;
         console.log("Update Success!!!");
         res.json(stu);
