@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var student = require("../models/StudentModels.js");
+var student = require("../models/StudentModel.js");
 
 
 router.get('/', function (req, res) {//find All
