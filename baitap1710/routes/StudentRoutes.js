@@ -1,25 +1,16 @@
-const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/mydb');
-var studentSchema = mongoose.Schema({
-    mssv: Number,
-    name: String
-});
-
-var student = mongoose.model("student", studentSchema);
-
-
-module.exports.findAll = function (req, res) {
-
+var express = require('express');
+var router = express.Router();
+var student = require("../models/student.js");
+router.get('/', function (req, res) {
     student.find(function (err, data) {
         if (err) throw err;
         res.render("homepage.ejs", { listStudent: data });
     })
-}
-module.exports.viewadd = function (req, res) {
+});
+router.get("/viewadd", function (req, res) {
     res.render("viewadd.ejs");
-}
-
-module.exports.add = function (req, res) {
+});
+router.post("/", function (req, res) {
     var data = toObject(req.body);
     checkMssv(data.mssv, (result) => {
         if (result == null) {
@@ -37,17 +28,8 @@ module.exports.add = function (req, res) {
             });
         }
     })
-
-}
-
-function checkMssv(mssv, callBack) {
-    student.findOne({ mssv: mssv }, function kq(err, result) {
-        if (err) throw err;
-        callBack(result);
-    })
-}
-
-module.exports.delete = function (req, res) {
+});
+router.delete("/", function (req, res) {
     var stu = req.body.mssv;
     student.findOneAndRemove({ mssv: stu }, function (err, result) {
         if (err) throw err;
@@ -57,32 +39,38 @@ module.exports.delete = function (req, res) {
             console.log("Delete Success!!!");
         res.json(result);
     })
-}
-module.exports.viewSearch = function (req, res) {
+});
+router.get("/viewsearch", function (req, res) {
     res.render("viewsearch.ejs");
-}
-module.exports.search = function (req, res) {
+});
+router.get("/search", function (req, res) {
     var stu = checkSearchInput(req.query);
     student.findOne(stu, function (err, result) {
         if (err) throw err;
         console.log("Find success!!");
         res.json(result);
     })
-}
-module.exports.viewdelete = function (req, res) {
+});
+router.get("/viewdelete", function (req, res) {
     res.render("viewdelete.ejs");
-}
-
-module.exports.viewupdate = function (req, res) {
+});
+router.get("/:id/viewupdate", function (req, res) {
     var id = req.params.id;
     res.render("viewupdate.ejs", { id: id });
-}
-module.exports.update = function (req, res) {
+});
+router.put("/:id", function (req, res) {
     var stu = toObject(req.body);
     student.updateOne({ mssv: req.params.id }, stu, function (err) {
         if (err) throw err;
         console.log("Update Success!!!");
         res.json(stu);
+    })
+});
+//
+function checkMssv(mssv, callBack) {
+    student.findOne({ mssv: mssv }, function kq(err, result) {
+        if (err) throw err;
+        callBack(result);
     })
 }
 function checkSearchInput(obj) {
@@ -115,3 +103,4 @@ function checkUndefined(inPut) {
         return null;
     return inPut;
 }
+module.exports = router;
