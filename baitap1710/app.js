@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const rou = require("./routes/StudentRoutes.js");
+const rou = require("./controller/StudentControllers.js");
 var bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
