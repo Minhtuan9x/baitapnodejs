@@ -1,18 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var student = require("../models/StudentModel.js");
+const student = require("../models/student.js");
 
-
-router.get('/', function (req, res) {//find All
+module.exports.findAll = function (req, res) {//find All
     student.find(function (err, data) {
         if (err) throw err;
         res.render("homepage.ejs", { listStudent: data });
     })
-});
-router.get("/viewadd", function (req, res) {// render vỉew add
+}
+
+module.exports.viewAdd = function (req, res) {// render vỉew add
     res.render("viewadd.ejs");
-});
-router.post("/", function (req, res) {//add
+}
+
+module.exports.add = function (req, res) {//add
     var data = toObject(req.body);
     checkMssv(data.mssv, (result) => {
         if (result == null) {
@@ -30,8 +29,8 @@ router.post("/", function (req, res) {//add
             });
         }
     })
-});
-router.delete("/", function (req, res) {//delete
+}
+module.exports.delete = function (req, res) {//delete
     var stu = req.body.mssv;
     student.findOneAndRemove({ mssv: stu }, function (err, result) {
         if (err) throw err;
@@ -41,33 +40,34 @@ router.delete("/", function (req, res) {//delete
             console.log("Delete Success!!!");
         res.json(result);
     })
-});
-router.get("/viewsearch", function (req, res) {//view search
+}
+module.exports.viewSearch = function (req, res) {//view search
     res.render("viewsearch.ejs");
-});
-router.get("/search", function (req, res) {//search
+}
+module.exports.search = function (req, res) {//search
     var stu = checkSearchInput(req.query);
     student.findOne(stu, function (err, result) {
         if (err) throw err;
         console.log("Find success!!");
         res.json(result);
     })
-});
-router.get("/viewdelete", function (req, res) {//view delete
+}
+module.exports.viewDelete = function (req, res) {//view delete
     res.render("viewdelete.ejs");
-});
-router.get("/:id/viewupdate", function (req, res) {//view update
+}
+module.exports.viewUpdate = function (req, res) {//view update
     var id = req.params.id;
     res.render("viewupdate.ejs", { id: id });
-});
-router.put("/:id", function (req, res) {
+}
+module.exports.update = function (req, res) {
     var stu = toObject(req.body);
     student.updateOne({ mssv: req.params.id }, stu, function (err) {//update
         if (err) throw err;
         console.log("Update Success!!!");
         res.json(stu);
     })
-});
+}
+
 //
 function checkMssv(mssv, callBack) {
     student.findOne({ mssv: mssv }, function kq(err, result) {
@@ -105,4 +105,3 @@ function checkUndefined(inPut) {
         return null;
     return inPut;
 }
-module.exports = router;

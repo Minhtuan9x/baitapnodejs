@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const rou = require("./controllers/StudentController.js");
+const rou = require("./controllers/student.js");
 var bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
