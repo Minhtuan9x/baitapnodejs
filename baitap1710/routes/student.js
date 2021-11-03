@@ -1,25 +1,17 @@
-const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/mydb');
-var studentSchema = mongoose.Schema({
-    mssv: Number,
-    name: String
-});
+const student = require("../models/student.js");
 
-var student = mongoose.model("student", studentSchema);
-
-
-module.exports.findAll = function (req, res) {
-
+module.exports.findAll = function (req, res) {//find All
     student.find(function (err, data) {
         if (err) throw err;
         res.render("homepage.ejs", { listStudent: data });
     })
 }
-module.exports.viewadd = function (req, res) {
+
+module.exports.viewAdd = function (req, res) {// render vỉew add
     res.render("viewadd.ejs");
 }
 
-module.exports.add = function (req, res) {
+module.exports.add = function (req, res) {//add
     var data = toObject(req.body);
     checkMssv(data.mssv, (result) => {
         if (result == null) {
@@ -37,17 +29,8 @@ module.exports.add = function (req, res) {
             });
         }
     })
-
 }
-
-function checkMssv(mssv, callBack) {
-    student.findOne({ mssv: mssv }, function kq(err, result) {
-        if (err) throw err;
-        callBack(result);
-    })
-}
-
-module.exports.delete = function (req, res) {
+module.exports.delete = function (req, res) {//delete
     var stu = req.body.mssv;
     student.findOneAndRemove({ mssv: stu }, function (err, result) {
         if (err) throw err;
@@ -58,10 +41,10 @@ module.exports.delete = function (req, res) {
         res.json(result);
     })
 }
-module.exports.viewSearch = function (req, res) {
+module.exports.viewSearch = function (req, res) {//view search
     res.render("viewsearch.ejs");
 }
-module.exports.search = function (req, res) {
+module.exports.search = function (req, res) {//search
     var stu = checkSearchInput(req.query);
     student.findOne(stu, function (err, result) {
         if (err) throw err;
@@ -69,20 +52,27 @@ module.exports.search = function (req, res) {
         res.json(result);
     })
 }
-module.exports.viewdelete = function (req, res) {
+module.exports.viewDelete = function (req, res) {//view delete
     res.render("viewdelete.ejs");
 }
-
-module.exports.viewupdate = function (req, res) {
+module.exports.viewUpdate = function (req, res) {//view update
     var id = req.params.id;
     res.render("viewupdate.ejs", { id: id });
 }
 module.exports.update = function (req, res) {
     var stu = toObject(req.body);
-    student.updateOne({ mssv: req.params.id }, stu, function (err) {
+    student.updateOne({ mssv: req.params.id }, stu, function (err) {//update
         if (err) throw err;
         console.log("Update Success!!!");
         res.json(stu);
+    })
+}
+
+//
+function checkMssv(mssv, callBack) {
+    student.findOne({ mssv: mssv }, function kq(err, result) {
+        if (err) throw err;
+        callBack(result);
     })
 }
 function checkSearchInput(obj) {
