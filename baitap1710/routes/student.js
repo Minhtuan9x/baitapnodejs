@@ -75,6 +75,21 @@ function checkMssv(mssv, callBack) {
         callBack(result);
     })
 }
+
+function toObject(body) {
+    var sv =
+    {
+        "mssv": checkUndefined(body.mssv),
+        "name": checkUndefined(body.name)
+    }
+    return sv;
+}
+function checkUndefined(inPut) {
+    if (inPut == undefined)
+        return null;
+    return inPut;
+}
+
 function checkSearchInput(obj) {
     var result;
     if (obj.mssv == "" || obj.mssv == null) {
@@ -90,18 +105,4 @@ function checkSearchInput(obj) {
         return result;
     }
     return obj
-}
-
-function toObject(body) {
-    var sv =
-    {
-        "mssv": checkUndefined(body.mssv),
-        "name": checkUndefined(body.name)
-    }
-    return sv;
-}
-function checkUndefined(inPut) {
-    if (inPut == undefined)
-        return null;
-    return inPut;
 }

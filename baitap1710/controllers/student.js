@@ -8,7 +8,7 @@ router.post("/", student.add);
 router.delete("/", student.delete);
 router.get("/viewsearch",student.viewSearch);
 router.get("/search",student.search);
-router.get("/viewdelete", );
+router.get("/viewdelete", student.viewDelete);
 router.get("/:id/viewupdate",student.viewUpdate);
 router.put("/:id", student.update);
 
